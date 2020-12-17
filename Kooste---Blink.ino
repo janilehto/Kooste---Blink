@@ -25,6 +25,37 @@ void setup(){
   digitalWrite(DISP2, DISPOFF);
 }
 
-void loop(){
-  digitalWrite(DISP2, DISPON);
+void showNum( int x ){
+  if( (x & 1) == 1 ){
+  	digitalWrite(BIT1, BITHIGH);
+  }else{
+    digitalWrite(BIT1, BITLOW);
+  }
+  if( (x & 2) == 2 ){
+  	digitalWrite(BIT2, BITHIGH);
+  }else{
+    digitalWrite(BIT2, BITLOW);
+  }
+  if( (x & 4) == 4 ){
+  	digitalWrite(BIT4, BITHIGH);
+  }else{
+    digitalWrite(BIT4, BITLOW);
+  }
+  if( (x & 8) == 8 ){
+  	digitalWrite(BIT8, BITHIGH);
+  }else{
+    digitalWrite(BIT8, BITLOW);
+  }
 }
+#define HOLDTIME 15
+void loop(){
+  showNum(4);
+  digitalWrite(DISP1, DISPON);
+  digitalWrite(DISP2, DISPOFF);
+  delay(HOLDTIME);
+  showNum(2);
+  digitalWrite(DISP1, DISPOFF);
+  digitalWrite(DISP2, DISPON);
+  delay(HOLDTIME);
+}
+
