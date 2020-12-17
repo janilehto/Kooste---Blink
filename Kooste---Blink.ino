@@ -78,10 +78,31 @@ void showValue( int val ){
   }
 }
 
-void loop(){
-  showValue( 24 );
+#define JAKSO 1000
+unsigned long vertailuHetki2 = JAKSO;
+bool timeToChangeValue(){
+  unsigned long nykyHetki = millis();
+  if( nykyHetki >= vertailuHetki2 ){
+    vertailuHetki2 += JAKSO;
+    return true;
+  }
+  return false;
+}
+int value = 24;
+void handleValue(){
+  if( timeToChangeValue() ){
+    if( value == 24 ){
+      value = 42;
+    }else{
+      value = 24;
+    }
+  }
+  showValue( value );
 }
 
+void loop(){
+  handleValue();
+}
 
 
 
