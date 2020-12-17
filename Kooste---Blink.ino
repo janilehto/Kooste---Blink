@@ -23,6 +23,7 @@ void setup(){
   digitalWrite(BIT8, BITLOW);
   digitalWrite(DISP1, DISPOFF);
   digitalWrite(DISP2, DISPOFF);
+  Serial.begin(9600);
 }
 
 void showNum( int x ){
@@ -47,15 +48,50 @@ void showNum( int x ){
     digitalWrite(BIT8, BITLOW);
   }
 }
+
+
 #define HOLDTIME 15
-void loop(){
-  showNum(4);
-  digitalWrite(DISP1, DISPON);
-  digitalWrite(DISP2, DISPOFF);
-  delay(HOLDTIME);
-  showNum(2);
-  digitalWrite(DISP1, DISPOFF);
-  digitalWrite(DISP2, DISPON);
-  delay(HOLDTIME);
+unsigned long vertailuHetki = HOLDTIME;
+bool timeToSwitchDisplays(){
+  unsigned long nykyHetki = millis();
+  if( nykyHetki >= vertailuHetki ){
+    vertailuHetki += HOLDTIME;
+    return true;
+  }
+  return false;
 }
+bool showOnes = true;
+void showValue( int val ){
+  if( timeToSwitchDisplays() ){
+    if( showOnes == true ){
+      showNum( val % 10 );
+      digitalWrite(DISP1, DISPOFF);
+      digitalWrite(DISP2, DISPON);
+      showOnes = false;
+    }else{
+      val /= 10;
+      showNum(val % 10);
+      digitalWrite(DISP1, DISPON);
+      digitalWrite(DISP2, DISPOFF);
+      showOnes = true;
+    }
+  }
+}
+
+void loop(){
+  showValue( 24 );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
